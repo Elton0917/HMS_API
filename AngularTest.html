@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AngularJS-WebApi</title>
+
+    <link href="Css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="Css/bootstrap.css" rel="stylesheet" />
+     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.js"></script>
+    <style>
+        i {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body id="ng-app">
+     <script src="JS/bootstrap.js"></script>
+    <div ng-controller="IndexCtrl" ng-cloak>
+        <div style="width: 500px;">
+            <table class="table table-striped table-bordered table-condensed table-hover">
+                <tr>
+                    <th style="width: 100px;">
+                        <div class="btn-toolbar"><i class="icon-plus" ng-click="toggleAddMode()"></i></div>
+                    </th>
+                    <th style="width: 50px;">UID</th>
+                    <th>U_Login
+                    </th>
+                    <th>U_Passwd
+                    </th>
+                    <th>U_FirstName
+                    </th>
+                </tr>
+                <tr ng-show="addMode">
+                    <td>
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <i class="icon-ok-sign" ng-click="addPerson()"></i>
+                                <i class="icon-remove" ng-click="toggleAddMode()"></i>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+
+                    <td>
+                        <input ng-model="person.U_Login" /></td>
+                    <td>
+                        <input ng-model="person.U_Passwd" /></td>
+                    <td>
+                        <input ng-model="person.U_FirstName" /></td>
+                </tr>
+                <tr ng-repeat="person in people | orderBy:'UID':true">
+                    <td>
+                        <div class="btn-toolbar" ng-show="person.editMode == null || person.editMode == false" >
+                            <div class="btn-group">
+                                <i class="icon-edit" ng-click="toggleEditMode(person)"></i>
+                                <i class="icon-trash" ng-click="deletePerson(person)"></i>
+                                <i class="icon-hand-down" ng-click="toggleSettingMode(person)"></i>
+                            </div>
+                        </div>
+                        <div class="btn-toolbar" ng-show="person.editMode == true">
+                            <div class="btn-group">
+                                <i class="icon-ok-sign" ng-click="updatePerson(person)"></i>
+                                <i class="icon-remove" ng-click="toggleEditMode(person)"></i>
+                                
+                            </div>
+                        </div>
+                        <div class="btn-toolbar" ng-show="person.SettingMode == true">
+                            <div class="btn-group">
+                                <i class="icon-ok-sign" ng-click="updatePerson(person)"></i>
+                                <i class="icon-remove" ng-click="toggleSettingMode(person)"></i>
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{person.UID}}</td>
+                    <td>
+                        <span ng-show="person.editMode == null || person.editMode == false">{{person.U_Login}}</span>
+                        <input ng-model="person.U_Login" ng-show="person.editMode == true" />
+                    </td>
+                    <td>
+                        <span ng-show="person.editMode == null || person.editMode == false">{{person.U_Passwd}}</span>
+                        <input ng-model="person.U_Passwd" ng-show="person.editMode == true" />
+                    </td>
+                     <td>
+                        <span ng-show="person.editMode == null || person.editMode == false">{{person.U_FirstName}}</span>
+                        <input ng-model="person.U_FirstName" ng-show="person.editMode == true" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('app', []);
+
+        var url = 'http://cdcform.zapto.org/HMSAPI/api/HMS/';
+
+        app.factory('personFactory', function ($http) {
+            return {
+                getPeople: function () {
+                    return $http.jsonp(url + '?callback=JSON_CALLBACK');
+                },
+                addPerson: function (person) {
+                    var message = { U_Login: person.U_Login, U_Passwd: person.U_Passwd,U_FirstName:person.U_FirstName };
+                    var json = JSON.stringify(message);
+                    
+                    return $http.post(url, json);
+                    //return $http({
+                    //    url: url,
+                    //    method: "POST",
+                    //    data: json,
+                    //    headers: { "Content-Type": "text/html" }
+                    //});
+                },
+                deletePerson: function (person) {
+                    return $http.delete(url + person.UID );
+                },
+                updatePerson: function (person) {
+                    return $http.put(url + person.UID, person);
+                }
+            };
+        });
+
+        app.factory('notificationFactory', function () {
+
+            return {
+                success: function () {
+                    toastr.success("Success");
+                },
+                error: function (text) {
+                    toastr.error(text, "Error!");
+                }
+            };
+        });
+
+        app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory) {
+            $scope.people = [];
+            $scope.addMode = false;
+
+            $scope.toggleAddMode = function () {
+                $scope.addMode = !$scope.addMode;
+            };
+
+            $scope.toggleEditMode = function (person) {
+                person.editMode = !person.editMode;
+            };
+
+            $scope.toggleSettingMode = function (person) {
+                person.SettingMode = !person.SettingMode;
+            };
+
+            var getPeopleSuccessCallback = function (data, status) {
+                $scope.people = data;
+            };
+
+            var successCallback = function (data, status, headers, config) {
+                notificationFactory.success();
+
+                return personFactory.getPeople().success(getPeopleSuccessCallback).error(errorCallback);
+            };
+
+            var successPostCallback = function (data, status, headers, config) {
+                successCallback(data, status, headers, config).success(function () {
+                    $scope.toggleAddMode();
+                    $scope.person = {};
+                });
+            };
+
+            var errorCallback = function (data, status, headers, config) {
+                notificationFactory.error(data.ExceptionMessage);
+            };
+
+
+            personFactory.getPeople().success(getPeopleSuccessCallback).error(errorCallback);
+
+            $scope.addPerson = function () {
+                personFactory.addPerson($scope.person).success(successPostCallback).error(errorCallback);
+            };
+
+            $scope.deletePerson = function (person) {
+                personFactory.deletePerson(person).success(successCallback).error(errorCallback);
+            };
+
+            $scope.updatePerson = function (person) {
+                personFactory.updatePerson(person).success(successCallback).error(errorCallback);
+            };
+        });
+    </script>
+</body>
+</html>
