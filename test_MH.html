@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Web API CRUD Demo</title>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <!--<script src="JS/json2.js" type="text/javascript"></script>-->
+    <script type="text/javascript">
+
+        $(function () {
+            var apiurl = "/api/HMS_MH/";
+            var form = $('#frmMessage');
+            form.submit(function () {
+                var form = $(this);
+                var message = { UID: $('#U_Login').val(), HID: $("#U_Passwd").val(), H_Alert1: $("#U_FirstName").val() };
+                var json = JSON.stringify(message);
+                 
+                $.ajax({
+                    url: apiurl,
+                    cache: false,
+                    type: 'POST',
+                    data: json,
+                    dataType: 'json',
+                    //crossDomain: true,
+                    contentType: 'application/json; charset=utf-8',
+                    //contentType: "text/html; charset=utf-8",
+                    statusCode: {
+                        201 /*Created*/: function (data) {
+                            GetMessages();
+                        }
+                    }
+                });
+
+                return false;
+            });
+        });
+        $(function () {
+            var apiurl = "/api/HMS_MH";
+            $(document).on("click", ".delete", function () {
+                if (confirm('確定要刪除')) {
+
+                    var id = $(this).data('comment-id');
+                    var msgLogin = $(this).parents().children('.msg').val();
+                    alert(id);
+                    $.ajax({
+                        url: apiurl + '/' + msgLogin + '/' + id,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        cache: false,
+                        async: false ,
+                        statusCode: {
+                            200: function (data) {
+                                GetMessages();
+                            }
+                        },
+                        error: function (xhr) {
+                            alert('Ajax request 發生錯誤' + xhr);
+                        },
+                        success: function (response) {
+                            alert('DELETE成功')
+                        }
+                    });
+                }
+                return false;
+            });
+        });
+        //update
+        $(function () {
+            var apiurl = "/api/HMS_MH";
+            $(document).on("click", ".update", function () {
+                var id = $(this).data('comment-id');
+                var msgLogin = $(this).parents().children('.msg').val();
+                var msgPasswd = $(this).parents().children('.msg2').val();
+                var msgFirstName = $(this).parents().children('.msg3').val();
+                var msgLastName = $(this).parents().children('.msg4').val();
+                var message = { MHID: id, UID: msgLogin, HID: msgPasswd, H_Alert1: msgFirstName, H_Alert2: msgLastName };
+
+                var json = JSON.stringify(message);
+                alert(json);
+                $.ajax({
+                    url: apiurl,
+                    cache: false,
+                    type: 'PUT',
+                    data: json,
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    statusCode: {
+                        200 /*Created*/: function (data) {
+                            GetMessages();
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('Ajax request 發生錯誤');
+                    },
+                    success: function (response) {
+                        alert('update成功');
+                    }
+                });
+
+                return false;
+            });
+        });
+        //--
+
+
+        function GetMessages() {
+
+            $('#divBoardList').empty(); // Clear the table body.
+            $('#txtRID').val('');
+            var apiurl = "/api/HMS_MH/";
+            $.ajax({
+                url: apiurl,
+                type: 'GET',
+                dataType: 'jsonp',
+                error: function (xhr) {
+                    alert('Ajax request 發生錯誤');
+                },
+                success: function (data) {
+                    alert('GET成功');
+                    var row = '';
+                    $.each(data, function (key, val) {
+                        row = row + '<div class="fb6">UID : ' + val.MHID + ' 帳號: <input type="text" class="msg" style="width: 20%;" value="' + val.UID + '"/> 密碼: <input type="text" class="msg2" style="width: 20%;" value="' + val.HID + '"/>名: <input type="text" class="msg3" style="width: 20%;" value="' + val.H_Alert1 + '"/>名: <input type="text" class="msg4" style="width: 20%;" value="' + val.H_Alert2 + '"/>';
+                        row = row + '<br /><span class="fbx-tiny">生日:&nbsp;&nbsp;&nbsp;' + val.U_BirthDay + '</span>&nbsp;&nbsp;<a class="delete" href="#" data-comment-id="' + val.MHID + '">刪除</a>&nbsp;&nbsp;<a class="update" href="#" data-comment-id="' + val.MHID + '">更新</a><br /> </div> <br style="clear: both;">';
+                    });
+                    $('#divBoardList').html(row);
+                }
+            });
+
+            //$.getJSON(apiurl,
+            //function (data) {
+
+
+            //    // Loop through the list of products. 
+            //    var row = '';
+            //    $.each(data, function (key, val) {
+            //        row = row + '<div class="fb6">UID : ' + val.UID + ' 帳號: <input type="text" class="msg" style="width: 20%;" value="' + val.U_Login + '"/> 密碼: <input type="text" class="msg2" style="width: 20%;" value="' + val.U_Passwd + '"/>名: <input type="text" class="msg3" style="width: 20%;" value="' + val.U_FirstName + '"/>名: <input type="text" class="msg4" style="width: 20%;" value="' + val.U_LastName + '"/>';
+            //        row = row + '<br /><span class="fbx-tiny">生日:&nbsp;&nbsp;&nbsp;' + val.U_BirthDay + '</span>&nbsp;&nbsp;<a class="delete" href="#" data-comment-id="' + val.UID + '">刪除</a>&nbsp;&nbsp;<a class="update" href="#" data-comment-id="' + val.UID + '">更新</a><br /> </div> <br style="clear: both;">';
+            //    });
+            //    $('#divBoardList').html(row);
+
+            //});
+        }
+
+
+    </script>
+</head>
+<body>
+    <form id="frmMessage">
+
+        <fieldset>
+            <legend>註冊</legend>
+            <label for="U_Login">帳號</label>
+            <input id="U_Login" name="U_Login" type="text" value="" />
+            <label for="U_Passwd">密碼</label>
+            <input id="U_Passwd" name="U_Passwd" type="text" value="" />
+            <label for="U_FirstName">名</label>
+            <input id="U_FirstName" name="U_FirstName" type="text" value="" />
+            <label for="U_LastName">姓</label>
+            <input id="U_LastName" name="U_LastName" type="text" value="" />
+            <label for="U_BirthDay">生日</label>
+            <input id="U_BirthDay" name="U_BirthDay" type="date" value="" />
+
+
+            <button class="uibutton confirm" type="submit">新增</button>
+        </fieldset>
+    </form>
+    <p>
+        <button class="uibutton confirm" type="button" onclick="GetMessages();">Get Messages</button>
+    </p>
+    <div id="divBoardList">
+    </div>
+</body>
+</html>

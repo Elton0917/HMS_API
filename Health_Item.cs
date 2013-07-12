@@ -16,7 +16,6 @@ namespace HMSAPI
     {
         public Health_Item()
         {
-            this.Group_Health_Item = new HashSet<Group_Health_Item>();
             this.Manage_Health = new HashSet<Manage_Health>();
         }
     
@@ -24,7 +23,6 @@ namespace HMSAPI
         public string H_Name { get; set; }
         public string H_Comment { get; set; }
     
-        public virtual ICollection<Group_Health_Item> Group_Health_Item { get; set; }
         public virtual ICollection<Manage_Health> Manage_Health { get; set; }
     }
 }

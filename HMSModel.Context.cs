@@ -26,7 +26,6 @@ namespace HMSAPI
         }
     
         public DbSet<Group> Group { get; set; }
-        public DbSet<Group_Health_Item> Group_Health_Item { get; set; }
         public DbSet<Group_Member> Group_Member { get; set; }
         public DbSet<Health_Item> Health_Item { get; set; }
         public DbSet<Login_User> Login_User { get; set; }

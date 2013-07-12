@@ -16,17 +16,22 @@ namespace HMSAPI
     {
         public Group()
         {
-            this.Group_Health_Item = new HashSet<Group_Health_Item>();
             this.Group_Member = new HashSet<Group_Member>();
+            this.Record = new HashSet<Record>();
         }
     
         public string GID { get; set; }
         public string UID { get; set; }
         public string G_Name { get; set; }
         public string G_Open { get; set; }
+        public string HIID3 { get; set; }
+        public string HIID4 { get; set; }
+        public string HIID5 { get; set; }
+        public string HIID1 { get; set; }
+        public string HIID2 { get; set; }
     
-        public virtual ICollection<Group_Health_Item> Group_Health_Item { get; set; }
         public virtual Login_User Login_User { get; set; }
         public virtual ICollection<Group_Member> Group_Member { get; set; }
+        public virtual ICollection<Record> Record { get; set; }
     }
 }

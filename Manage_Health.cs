@@ -14,11 +14,6 @@ namespace HMSAPI
     
     public partial class Manage_Health
     {
-        public Manage_Health()
-        {
-            this.Record = new HashSet<Record>();
-        }
-    
         public string MHID { get; set; }
         public string UID { get; set; }
         public string HID { get; set; }
@@ -28,6 +23,5 @@ namespace HMSAPI
     
         public virtual Health_Item Health_Item { get; set; }
         public virtual Login_User Login_User { get; set; }
-        public virtual ICollection<Record> Record { get; set; }
     }
 }

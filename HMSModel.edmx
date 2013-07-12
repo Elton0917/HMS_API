@@ -4,10 +4,9 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HealthManageSystemModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="HealthManageSystemModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="HealthManageSystemModelStoreContainer">
           <EntitySet Name="Group" EntityType="HealthManageSystemModel.Store.Group" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Group_Health_Item" EntityType="HealthManageSystemModel.Store.Group_Health_Item" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Group_Member" EntityType="HealthManageSystemModel.Store.Group_Member" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Health_Item" EntityType="HealthManageSystemModel.Store.Health_Item" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Login_User" EntityType="HealthManageSystemModel.Store.Login_User" store:Type="Tables" Schema="dbo" />
@@ -15,14 +14,6 @@
           <EntitySet Name="Record" EntityType="HealthManageSystemModel.Store.Record" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Remind" EntityType="HealthManageSystemModel.Store.Remind" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sysdiagrams" EntityType="HealthManageSystemModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_Group_Health_Item_Group" Association="HealthManageSystemModel.Store.FK_Group_Health_Item_Group">
-            <End Role="Group" EntitySet="Group" />
-            <End Role="Group_Health_Item" EntitySet="Group_Health_Item" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Group_Health_Item_Health_Item" Association="HealthManageSystemModel.Store.FK_Group_Health_Item_Health_Item">
-            <End Role="Health_Item" EntitySet="Health_Item" />
-            <End Role="Group_Health_Item" EntitySet="Group_Health_Item" />
-          </AssociationSet>
           <AssociationSet Name="FK_Group_Login_User" Association="HealthManageSystemModel.Store.FK_Group_Login_User">
             <End Role="Login_User" EntitySet="Login_User" />
             <End Role="Group" EntitySet="Group" />
@@ -39,12 +30,12 @@
             <End Role="Login_User" EntitySet="Login_User" />
             <End Role="Manage_Health" EntitySet="Manage_Health" />
           </AssociationSet>
-          <AssociationSet Name="FK_Record_Login_User" Association="HealthManageSystemModel.Store.FK_Record_Login_User">
-            <End Role="Login_User" EntitySet="Login_User" />
+          <AssociationSet Name="FK_Record_Group" Association="HealthManageSystemModel.Store.FK_Record_Group">
+            <End Role="Group" EntitySet="Group" />
             <End Role="Record" EntitySet="Record" />
           </AssociationSet>
-          <AssociationSet Name="FK_Record_Manage_Health" Association="HealthManageSystemModel.Store.FK_Record_Manage_Health">
-            <End Role="Manage_Health" EntitySet="Manage_Health" />
+          <AssociationSet Name="FK_Record_Login_User" Association="HealthManageSystemModel.Store.FK_Record_Login_User">
+            <End Role="Login_User" EntitySet="Login_User" />
             <End Role="Record" EntitySet="Record" />
           </AssociationSet>
           <AssociationSet Name="FK_Remind_Login_User" Association="HealthManageSystemModel.Store.FK_Remind_Login_User">
@@ -60,14 +51,11 @@
           <Property Name="UID" Type="nvarchar" Nullable="false" MaxLength="20" />
           <Property Name="G_Name" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="G_Open" Type="nvarchar" Nullable="false" MaxLength="10" />
-        </EntityType>
-        <EntityType Name="Group_Health_Item">
-          <Key>
-            <PropertyRef Name="GHIID" />
-          </Key>
-          <Property Name="GHIID" Type="nvarchar" Nullable="false" MaxLength="20" />
-          <Property Name="GID" Type="nvarchar" MaxLength="20" />
-          <Property Name="HIID" Type="nvarchar" MaxLength="20" />
+          <Property Name="HIID1" Type="nvarchar" MaxLength="20" />
+          <Property Name="HIID2" Type="nvarchar" MaxLength="20" />
+          <Property Name="HIID3" Type="nvarchar" MaxLength="20" />
+          <Property Name="HIID4" Type="nvarchar" MaxLength="20" />
+          <Property Name="HIID5" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Group_Member">
           <Key>
@@ -119,7 +107,8 @@
           </Key>
           <Property Name="RID" Type="nvarchar" Nullable="false" MaxLength="20" />
           <Property Name="UID" Type="nvarchar" Nullable="false" MaxLength="20" />
-          <Property Name="MHID" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="GID" Type="nvarchar" MaxLength="20" />
+          <Property Name="MHID" Type="nvarchar" MaxLength="20" />
           <Property Name="R_Value1" Type="nvarchar" MaxLength="10" />
           <Property Name="R_Value2" Type="nvarchar" MaxLength="10" />
           <Property Name="R_Value3" Type="nvarchar" MaxLength="10" />
@@ -156,30 +145,6 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <Association Name="FK_Group_Health_Item_Group">
-          <End Role="Group" Type="HealthManageSystemModel.Store.Group" Multiplicity="0..1" />
-          <End Role="Group_Health_Item" Type="HealthManageSystemModel.Store.Group_Health_Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Group">
-              <PropertyRef Name="GID" />
-            </Principal>
-            <Dependent Role="Group_Health_Item">
-              <PropertyRef Name="GID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Group_Health_Item_Health_Item">
-          <End Role="Health_Item" Type="HealthManageSystemModel.Store.Health_Item" Multiplicity="0..1" />
-          <End Role="Group_Health_Item" Type="HealthManageSystemModel.Store.Group_Health_Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Health_Item">
-              <PropertyRef Name="HIID" />
-            </Principal>
-            <Dependent Role="Group_Health_Item">
-              <PropertyRef Name="HIID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Group_Login_User">
           <End Role="Login_User" Type="HealthManageSystemModel.Store.Login_User" Multiplicity="1" />
           <End Role="Group" Type="HealthManageSystemModel.Store.Group" Multiplicity="*" />
@@ -228,6 +193,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Record_Group">
+          <End Role="Group" Type="HealthManageSystemModel.Store.Group" Multiplicity="0..1" />
+          <End Role="Record" Type="HealthManageSystemModel.Store.Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GID" />
+            </Principal>
+            <Dependent Role="Record">
+              <PropertyRef Name="GID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Record_Login_User">
           <End Role="Login_User" Type="HealthManageSystemModel.Store.Login_User" Multiplicity="1" />
           <End Role="Record" Type="HealthManageSystemModel.Store.Record" Multiplicity="*" />
@@ -237,18 +214,6 @@
             </Principal>
             <Dependent Role="Record">
               <PropertyRef Name="UID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Record_Manage_Health">
-          <End Role="Manage_Health" Type="HealthManageSystemModel.Store.Manage_Health" Multiplicity="1" />
-          <End Role="Record" Type="HealthManageSystemModel.Store.Record" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Manage_Health">
-              <PropertyRef Name="MHID" />
-            </Principal>
-            <Dependent Role="Record">
-              <PropertyRef Name="MHID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -264,14 +229,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HealthManageSystemModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="HealthManageSystemEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="Group" EntityType="HealthManageSystemModel.Group" />
-          <EntitySet Name="Group_Health_Item" EntityType="HealthManageSystemModel.Group_Health_Item" />
           <EntitySet Name="Group_Member" EntityType="HealthManageSystemModel.Group_Member" />
           <EntitySet Name="Health_Item" EntityType="HealthManageSystemModel.Health_Item" />
           <EntitySet Name="Login_User" EntityType="HealthManageSystemModel.Login_User" />
@@ -279,10 +242,6 @@
           <EntitySet Name="Record" EntityType="HealthManageSystemModel.Record" />
           <EntitySet Name="Remind" EntityType="HealthManageSystemModel.Remind" />
           <EntitySet Name="sysdiagrams" EntityType="HealthManageSystemModel.sysdiagrams" />
-          <AssociationSet Name="FK_Group_Health_Item_Group" Association="HealthManageSystemModel.FK_Group_Health_Item_Group">
-            <End Role="Group" EntitySet="Group" />
-            <End Role="Group_Health_Item" EntitySet="Group_Health_Item" />
-          </AssociationSet>
           <AssociationSet Name="FK_Group_Login_User" Association="HealthManageSystemModel.FK_Group_Login_User">
             <End Role="Login_User" EntitySet="Login_User" />
             <End Role="Group" EntitySet="Group" />
@@ -290,10 +249,6 @@
           <AssociationSet Name="FK_Group_Member_Group" Association="HealthManageSystemModel.FK_Group_Member_Group">
             <End Role="Group" EntitySet="Group" />
             <End Role="Group_Member" EntitySet="Group_Member" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Group_Health_Item_Health_Item" Association="HealthManageSystemModel.FK_Group_Health_Item_Health_Item">
-            <End Role="Health_Item" EntitySet="Health_Item" />
-            <End Role="Group_Health_Item" EntitySet="Group_Health_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Manage_Health_Health_Item" Association="HealthManageSystemModel.FK_Manage_Health_Health_Item">
             <End Role="Health_Item" EntitySet="Health_Item" />
@@ -311,8 +266,8 @@
             <End Role="Login_User" EntitySet="Login_User" />
             <End Role="Remind" EntitySet="Remind" />
           </AssociationSet>
-          <AssociationSet Name="FK_Record_Manage_Health" Association="HealthManageSystemModel.FK_Record_Manage_Health">
-            <End Role="Manage_Health" EntitySet="Manage_Health" />
+          <AssociationSet Name="FK_Record_Group" Association="HealthManageSystemModel.FK_Record_Group">
+            <End Role="Group" EntitySet="Group" />
             <End Role="Record" EntitySet="Record" />
           </AssociationSet>
         </EntityContainer>
@@ -324,19 +279,14 @@
           <Property Name="UID" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="G_Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="G_Open" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Group_Health_Item" Relationship="HealthManageSystemModel.FK_Group_Health_Item_Group" FromRole="Group" ToRole="Group_Health_Item" />
           <NavigationProperty Name="Login_User" Relationship="HealthManageSystemModel.FK_Group_Login_User" FromRole="Group" ToRole="Login_User" />
           <NavigationProperty Name="Group_Member" Relationship="HealthManageSystemModel.FK_Group_Member_Group" FromRole="Group" ToRole="Group_Member" />
-        </EntityType>
-        <EntityType Name="Group_Health_Item">
-          <Key>
-            <PropertyRef Name="GHIID" />
-          </Key>
-          <Property Name="GHIID" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="GID" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="HIID" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Group" Relationship="HealthManageSystemModel.FK_Group_Health_Item_Group" FromRole="Group_Health_Item" ToRole="Group" />
-          <NavigationProperty Name="Health_Item" Relationship="HealthManageSystemModel.FK_Group_Health_Item_Health_Item" FromRole="Group_Health_Item" ToRole="Health_Item" />
+          <Property Type="String" Name="HIID3" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="HIID4" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="HIID5" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Record" Relationship="HealthManageSystemModel.FK_Record_Group" FromRole="Group" ToRole="Record" />
+          <Property Type="String" Name="HIID1" Unicode="true" FixedLength="false" MaxLength="20" />
+          <Property Type="String" Name="HIID2" Unicode="true" FixedLength="false" MaxLength="20" />
         </EntityType>
         <EntityType Name="Group_Member">
           <Key>
@@ -355,7 +305,6 @@
           <Property Name="HIID" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="H_Name" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="H_Comment" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Group_Health_Item" Relationship="HealthManageSystemModel.FK_Group_Health_Item_Health_Item" FromRole="Health_Item" ToRole="Group_Health_Item" />
           <NavigationProperty Name="Manage_Health" Relationship="HealthManageSystemModel.FK_Manage_Health_Health_Item" FromRole="Health_Item" ToRole="Manage_Health" />
         </EntityType>
         <EntityType Name="Login_User">
@@ -390,7 +339,6 @@
           <Property Name="H_Alert3" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Health_Item" Relationship="HealthManageSystemModel.FK_Manage_Health_Health_Item" FromRole="Manage_Health" ToRole="Health_Item" />
           <NavigationProperty Name="Login_User" Relationship="HealthManageSystemModel.FK_Manage_Health_Login_User" FromRole="Manage_Health" ToRole="Login_User" />
-          <NavigationProperty Name="Record" Relationship="HealthManageSystemModel.FK_Record_Manage_Health" FromRole="Manage_Health" ToRole="Record" />
         </EntityType>
         <EntityType Name="Record">
           <Key>
@@ -398,13 +346,14 @@
           </Key>
           <Property Name="RID" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="UID" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="MHID" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="MHID" Type="String" Nullable="true" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="R_Value1" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="R_Value2" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="R_Value3" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="R_DateTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Login_User" Relationship="HealthManageSystemModel.FK_Record_Login_User" FromRole="Record" ToRole="Login_User" />
-          <NavigationProperty Name="Manage_Health" Relationship="HealthManageSystemModel.FK_Record_Manage_Health" FromRole="Record" ToRole="Manage_Health" />
+          <Property Type="String" Name="GID" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Group" Relationship="HealthManageSystemModel.FK_Record_Group" FromRole="Record" ToRole="Group" />
         </EntityType>
         <EntityType Name="Remind">
           <Key>
@@ -438,18 +387,6 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <Association Name="FK_Group_Health_Item_Group">
-          <End Role="Group" Type="HealthManageSystemModel.Group" Multiplicity="0..1" />
-          <End Role="Group_Health_Item" Type="HealthManageSystemModel.Group_Health_Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Group">
-              <PropertyRef Name="GID" />
-            </Principal>
-            <Dependent Role="Group_Health_Item">
-              <PropertyRef Name="GID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Group_Login_User">
           <End Role="Login_User" Type="HealthManageSystemModel.Login_User" Multiplicity="1" />
           <End Role="Group" Type="HealthManageSystemModel.Group" Multiplicity="*" />
@@ -471,18 +408,6 @@
             </Principal>
             <Dependent Role="Group_Member">
               <PropertyRef Name="GID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Group_Health_Item_Health_Item">
-          <End Role="Health_Item" Type="HealthManageSystemModel.Health_Item" Multiplicity="0..1" />
-          <End Role="Group_Health_Item" Type="HealthManageSystemModel.Group_Health_Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Health_Item">
-              <PropertyRef Name="HIID" />
-            </Principal>
-            <Dependent Role="Group_Health_Item">
-              <PropertyRef Name="HIID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -534,15 +459,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Record_Manage_Health">
-          <End Role="Manage_Health" Type="HealthManageSystemModel.Manage_Health" Multiplicity="1" />
-          <End Role="Record" Type="HealthManageSystemModel.Record" Multiplicity="*" />
+        <Association Name="FK_Record_Group">
+          <End Type="HealthManageSystemModel.Group" Role="Group" Multiplicity="0..1" />
+          <End Type="HealthManageSystemModel.Record" Role="Record" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Manage_Health">
-              <PropertyRef Name="MHID" />
+            <Principal Role="Group">
+              <PropertyRef Name="GID" />
             </Principal>
             <Dependent Role="Record">
-              <PropertyRef Name="MHID" />
+              <PropertyRef Name="GID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -555,19 +480,15 @@
           <EntitySetMapping Name="Group">
             <EntityTypeMapping TypeName="HealthManageSystemModel.Group">
               <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="HIID2" ColumnName="HIID2" />
+                <ScalarProperty Name="HIID1" ColumnName="HIID1" />
+                <ScalarProperty Name="HIID5" ColumnName="HIID5" />
+                <ScalarProperty Name="HIID4" ColumnName="HIID4" />
+                <ScalarProperty Name="HIID3" ColumnName="HIID3" />
                 <ScalarProperty Name="GID" ColumnName="GID" />
                 <ScalarProperty Name="UID" ColumnName="UID" />
                 <ScalarProperty Name="G_Name" ColumnName="G_Name" />
                 <ScalarProperty Name="G_Open" ColumnName="G_Open" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Group_Health_Item">
-            <EntityTypeMapping TypeName="HealthManageSystemModel.Group_Health_Item">
-              <MappingFragment StoreEntitySet="Group_Health_Item">
-                <ScalarProperty Name="GHIID" ColumnName="GHIID" />
-                <ScalarProperty Name="GID" ColumnName="GID" />
-                <ScalarProperty Name="HIID" ColumnName="HIID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -622,6 +543,7 @@
           <EntitySetMapping Name="Record">
             <EntityTypeMapping TypeName="HealthManageSystemModel.Record">
               <MappingFragment StoreEntitySet="Record">
+                <ScalarProperty Name="GID" ColumnName="GID" />
                 <ScalarProperty Name="RID" ColumnName="RID" />
                 <ScalarProperty Name="UID" ColumnName="UID" />
                 <ScalarProperty Name="MHID" ColumnName="MHID" />

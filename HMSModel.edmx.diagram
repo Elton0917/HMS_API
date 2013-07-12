@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="ae9b5bac715448e1bb10336f0157b019" Name="圖表1">
         <EntityTypeShape EntityType="HealthManageSystemModel.Group" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="HealthManageSystemModel.Group_Health_Item" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="HealthManageSystemModel.Group_Member" Width="1.5" PointX="5.25" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HealthManageSystemModel.Health_Item" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="HealthManageSystemModel.Login_User" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
@@ -14,15 +13,13 @@
         <EntityTypeShape EntityType="HealthManageSystemModel.Record" Width="1.5" PointX="8.25" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="HealthManageSystemModel.Remind" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HealthManageSystemModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="HealthManageSystemModel.FK_Group_Health_Item_Group" ManuallyRouted="false" />
         <AssociationConnector Association="HealthManageSystemModel.FK_Group_Login_User" ManuallyRouted="false" />
         <AssociationConnector Association="HealthManageSystemModel.FK_Group_Member_Group" ManuallyRouted="false" />
-        <AssociationConnector Association="HealthManageSystemModel.FK_Group_Health_Item_Health_Item" ManuallyRouted="false" />
         <AssociationConnector Association="HealthManageSystemModel.FK_Manage_Health_Health_Item" ManuallyRouted="false" />
         <AssociationConnector Association="HealthManageSystemModel.FK_Manage_Health_Login_User" ManuallyRouted="false" />
         <AssociationConnector Association="HealthManageSystemModel.FK_Record_Login_User" ManuallyRouted="false" />
         <AssociationConnector Association="HealthManageSystemModel.FK_Remind_Login_User" ManuallyRouted="false" />
-        <AssociationConnector Association="HealthManageSystemModel.FK_Record_Manage_Health" ManuallyRouted="false" />
+        <AssociationConnector Association="HealthManageSystemModel.FK_Record_Group" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

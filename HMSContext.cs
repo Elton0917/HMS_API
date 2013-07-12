@@ -19,4 +19,38 @@ namespace HMSAPI
         public string U_NiceName { get; set; }
         public string U_BirthDay { get; set; }
     }
+    public class HMS_ManageHealth
+    {
+        public string MHID { get; set; }
+        public string UID { get; set; }
+        public string HID { get; set; }
+        public string H_Alert1 { get; set; }
+        public string H_Alert2 { get; set; }
+        public string H_Alert3 { get; set; }
+    }
+    public class HMS_Health_Item
+    {
+        public string HIID { get; set; }
+        public string H_Name { get; set; }
+        public string H_Comment { get; set; }
+    }
+    public class HMS_Group
+    {
+        public string GID { get; set; }
+        public string UID { get; set; }
+        public string G_Name { get; set; }
+        public string G_Open { get; set; }
+        public string HIID1 { get; set; }
+        public string HIID2 { get; set; }
+        public string HIID3 { get; set; }
+        public string HIID4 { get; set; }
+        public string HIID5 { get; set; }
+    }
+    public class HMS_Group_Member
+    {
+        public string GMID { get; set; }
+        public string GID { get; set; }
+        public string UID { get; set; }
+        public string G_Role { get; set; }
+    }
 }

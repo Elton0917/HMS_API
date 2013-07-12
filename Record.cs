@@ -21,8 +21,9 @@ namespace HMSAPI
         public string R_Value2 { get; set; }
         public string R_Value3 { get; set; }
         public Nullable<System.DateTime> R_DateTime { get; set; }
+        public string GID { get; set; }
     
         public virtual Login_User Login_User { get; set; }
-        public virtual Manage_Health Manage_Health { get; set; }
+        public virtual Group Group { get; set; }
     }
 }

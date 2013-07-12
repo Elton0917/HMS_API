@@ -30,7 +30,16 @@ namespace HMSAPI
               routeTemplate: "api/{controller}/{UID}",
               defaults: new { UID = System.Web.Http.RouteParameter.Optional }
               );
-
+            RouteTable.Routes.MapHttpRoute(
+              name: "ManageHealthApi",
+              routeTemplate: "api/{controller}/{UID}/{MHID}",
+              defaults: new { UID = System.Web.Http.RouteParameter.Optional }
+              );
+            RouteTable.Routes.MapHttpRoute(
+              name: "HealthItemApi",
+              routeTemplate: "api/{controller}/{HIID}",
+              defaults: new { UID = System.Web.Http.RouteParameter.Optional }
+              );
             //----JSON
             //GlobalConfiguration.Configuration.Formatters.Insert(0, new JsonpMediaTypeFormatter());
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
